@@ -13,7 +13,7 @@ exports.handler = function (event, context, callback) {
         }
     }
      */
-    let changes = event.changes;
+    ////let changes = event.changes;
     let modified = 0, removed = 0;
     console.log(`Fetching ${event.path}`);
     s3.getObject({
@@ -23,19 +23,15 @@ exports.handler = function (event, context, callback) {
         .then(data => {
             let jszip = new JSZip();
             console.log(`Opening ${event.path}`);
-            jszip.loadAsync(data.Body).then(zip => {
-                console.log(`Opened ${event.path} as zip`);
-                Object.keys(changes).forEach(name => {
-                    if (changes[name] !== null) {
-                        console.log(`Modify ${name}`);
-                        zip.file(name, changes[name]);
-                        modified++;
-                    } else {
-                        console.log(`Remove ${name}`);
-                        zip.remove(name);
-                        removed++;
-                    }
+            jszip.loadAsync(data).then(function(contents) {
+                Object.keys(contents.files).forEach(function(filename) {
+                    zip.file(filename).async('nodebuffer').then(function(content) {
+                    var dest = path + filename;
+                    fs.writeFileSync(dest, content);
+                    }); 
                 });
+                });
+
                 let tmpPath = `/tmp/${event.path}`
                 console.log(`Writing to temp file ${tmpPath}`);
                 zip.generateNodeStream({ streamFiles: true })
