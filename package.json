@@ -1,0 +1,7 @@
+{
+  "name": "zipfiles",
+  "version": "1.0.0",
+  "dependencies": {
+    "jszip": "3.1.5"
+  }
+}
