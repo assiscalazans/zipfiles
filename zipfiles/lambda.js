@@ -2,6 +2,7 @@ let AWS = require('aws-sdk');
 let JSZip = require("jszip");
 let fs = require("fs");
 const s3 = new AWS.S3();
+
 exports.handler = function (event, context, callback) {
     /* The request payload will take the following format:
     {
@@ -13,12 +14,9 @@ exports.handler = function (event, context, callback) {
         }
     }
      */
-    ////let changes = event.changes;
-    let modified = 0, removed = 0;
-    console.log(`Fetching ${event.path}`);
-    
-      s3.getObject({
-        'Bucket': "hosted-archives",
+
+    s3.getObject({
+        'Bucket': "gedcef",
         'Key': event.path
     }).promise()
         .then(data => {
@@ -29,7 +27,16 @@ exports.handler = function (event, context, callback) {
                 ContentLength: 3191, 
                 ContentType: "image/jpeg", 
                 ETag: "\\"6805f2cfc46c0f04559748bb039d69ae\\"", 
-                LastModified:
+                LastModified: <Date Representation>, 
+                Metadata: {...}, 
+                TagCount: 2, 
+                VersionId: "null"
+            }
+            */
+        })
+        .catch(err => {
+            console.log(err, err.stack); // an error occurred
+        });
 
-        
+
 }
