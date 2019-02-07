@@ -20,16 +20,7 @@ exports.handler = function (event, context, callback) {
         'Key': event.path
     }).promise()
         .then(data => {
-            let jszip = new JSZip();
-            console.log(`Opening ${event.path}`);
-            jszip.loadAsync(data).then(function(contents) {
-                Object.keys(contents.files).forEach(function(filename) {
-                    zip.file(filename).async('nodebuffer').then(function(content) {
-                    var dest = path + filename;
-                    fs.writeFileSync(dest, content);
-                    }); 
-                });
-                });
+            console.log('funcionou');
 
 
 
