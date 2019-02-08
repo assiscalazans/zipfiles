@@ -38,5 +38,7 @@ exports.handler = function (event, context, callback) {
             console.log(err, err.stack); // an error occurred
         });
 
-
+    return Promise.reject('Oops!').catch(err => {
+        throw new Error(err);
+        });
 }
